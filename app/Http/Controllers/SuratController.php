@@ -25,7 +25,7 @@ class SuratController extends Controller
             // $data = Surat::with('id', $id)->first();
             $data = DB::table('surat')
                         ->join('jenis', 'surat.jenis_id', '=', 'jenis.id')
-                        ->select('surat.id', 'surat.no_surat', 'surat.tanggal', 'jenis.jenis', 'surat.perihal')
+                        ->select('surat.id', 'surat.no_surat', 'surat.tanggal', 'surat.jenis_id', 'jenis.jenis', 'surat.perihal')
                         ->where('surat.id', '=', $id)
                         ->get();
             if (empty($data)) {
@@ -44,11 +44,35 @@ class SuratController extends Controller
             
         } else {
             // $data = Surat::all();
-            $data = DB::table('surat')
+            $data['biasa'] = DB::table('surat')
                         ->join('jenis', 'surat.jenis_id', '=', 'jenis.id')
-                        ->select('surat.id', 'surat.no_surat', 'surat.tanggal', 'jenis.jenis', 'surat.perihal')
-                        ->orderBy('surat.id', 'asc')
+                        ->select('surat.id', 'surat.no_surat', 'surat.tanggal', 'surat.jenis_id', 'jenis.jenis', 'surat.perihal')
+                        ->where('surat.jenis_id', '=', 1)
+                        ->orderBy('surat.id', 'desc')
                         ->get();
+
+            $data['st'] = DB::table('surat')
+                        ->join('jenis', 'surat.jenis_id', '=', 'jenis.id')
+                        ->select('surat.id', 'surat.no_surat', 'surat.tanggal', 'surat.jenis_id', 'jenis.jenis', 'surat.perihal')
+                        ->where('surat.jenis_id', '=', 2)
+                        ->orderBy('surat.id', 'desc')
+                        ->get();
+
+            $data['se'] = DB::table('surat')
+                        ->join('jenis', 'surat.jenis_id', '=', 'jenis.id')
+                        ->select('surat.id', 'surat.no_surat', 'surat.tanggal', 'surat.jenis_id', 'jenis.jenis', 'surat.perihal')
+                        ->where('surat.jenis_id', '=', 3)
+                        ->orderBy('surat.id', 'desc')
+                        ->get();
+
+            $data['dp'] = DB::table('surat')
+                        ->join('jenis', 'surat.jenis_id', '=', 'jenis.id')
+                        ->select('surat.id', 'surat.no_surat', 'surat.tanggal', 'surat.jenis_id', 'jenis.jenis', 'surat.perihal')
+                        ->where('surat.jenis_id', '=', 4)
+                        ->orderBy('surat.id', 'desc')
+                        ->get();
+
+
             return response()->json([
                 'error' => false,
                 'message' => 'Berhasil',
